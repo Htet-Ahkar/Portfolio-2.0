@@ -6,6 +6,7 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      height: {},
       fontFamily: {
         sans: ["Roboto Slab", "Roboto", "sans-serif"],
       },
@@ -22,7 +23,7 @@ module.exports = {
           primaryText: "#000000",
           secondaryText: "#FFFFFF",
         },
-        success: "#A3E635",
+        success: "#156534",
         error: "#BE123C",
       },
     },

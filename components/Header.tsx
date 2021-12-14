@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 //Constants
 const buttons = [
@@ -8,8 +9,10 @@ const buttons = [
 ];
 
 const Header = () => {
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   //Darkmode on
   useEffect(() => {
@@ -17,6 +20,13 @@ const Header = () => {
     if (localStorage.getItem("theme") == "dark") {
       wrapper.classList.add("dark");
       setIsDarkMode(true);
+    }
+
+    //Change Logo
+    if (router.pathname == "/admin") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
     }
   }, []);
 
@@ -51,7 +61,10 @@ const Header = () => {
       {/* Logo and DarkMode Btn */}
       <div className="flex items-center">
         <h1 className="px-10 text-3xl font-bold dark:text-secondary md:text-5xl lg:px-20">
-          Xero
+          <a href={router.pathname == "/" ? "/admin" : "/"}>
+            {" "}
+            {isAdmin ? "Admin" : "Xero"}
+          </a>
         </h1>
         <div
           className="h-7 w-7 cursor-pointer dark:bg-secondary dark:rounded-lg lg:w-12 lg:h-12"
