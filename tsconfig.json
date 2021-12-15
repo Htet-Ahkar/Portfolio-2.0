@@ -21,7 +21,8 @@
     "**/*.tsx",
     "components/*.tsx",
     "components/Header.tsx",
-    "components/BlogForm.tsx"
+    "components/BlogForm.tsx",
+    "pages/admin.tsx"
   ],
   "exclude": ["node_modules"]
 }

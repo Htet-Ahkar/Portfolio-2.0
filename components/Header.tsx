@@ -28,7 +28,7 @@ const Header = () => {
     } else {
       setIsAdmin(false);
     }
-  }, []);
+  }, [router.pathname]);
 
   //Dark mode toggle
   const modeToggle = (e) => {
@@ -62,7 +62,6 @@ const Header = () => {
       <div className="flex items-center">
         <h1 className="px-10 text-3xl font-bold dark:text-secondary md:text-5xl lg:px-20">
           <a href={router.pathname == "/" ? "/admin" : "/"}>
-            {" "}
             {isAdmin ? "Admin" : "Xero"}
           </a>
         </h1>

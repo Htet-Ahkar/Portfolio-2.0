@@ -26,7 +26,10 @@ const blogForm = () => {
   };
 
   return (
-    <div className="bg-gray-300 w-full rounded-lg px-2.5 py-5 dark:bg-dark-bg dark:border-2 dark:border-dark-secondary">
+    <div
+      className="bg-gray-300 w-full rounded-lg px-2.5 py-5 dark:bg-dark-bg dark:border-2 dark:border-dark-secondary
+    lg:w-3/6"
+    >
       {/* Form */}
       <form
         className="relative"
