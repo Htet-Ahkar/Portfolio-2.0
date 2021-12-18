@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import FileBase from "react-file-base64";
 
 //Redux
-import { useDispatch } from "react-redux";
-import { createBlog } from "../actions/blogs";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { createBlog, getBlogs, updatedBlog } from "../actions/blogs";
 
 const blogForm = () => {
   const dispatch = useDispatch();
@@ -14,15 +14,37 @@ const blogForm = () => {
     categories: [],
     selectedFiles: [],
   });
+  const defaultState = {
+    title: "",
+    snippet: "",
+    body: "",
+    categories: [],
+    selectedFiles: [],
+  };
 
+  const blog = useSelector((state: RootStateOrAny) => state.blog);
+  // Get Blog
+  useEffect(() => {
+    setBlogData(blog == "default" ? blogData : blog);
+  }, [blog]);
+
+  //Clear
+  const clear = (e) => {
+    e.preventDefault();
+    setBlogData(defaultState);
+  };
+
+  //Submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createBlog(blogData));
-  };
+    blog == "default"
+      ? dispatch(createBlog(blogData))
+      : dispatch(updatedBlog(blog._id, blogData));
 
-  const clear = (e) => {
-    e.preventDefault();
+    dispatch(getBlogs());
+
+    setBlogData(defaultState);
   };
 
   return (
@@ -81,6 +103,29 @@ const blogForm = () => {
             setBlogData({ ...blogData, body: e.target.value });
           }}
         />
+        {/* Photos */}
+        <div className={`my-2 h-5 flex gap-2 justify-start items-center`}>
+          {blogData.selectedFiles.length > 0 &&
+            blogData.selectedFiles.map((file, index) => (
+              <div
+                key={index}
+                className="text-center h-full bg-primary text-primaryText rounded-full w-5 cursor-pointer
+                dark:bg-dark-primary dark:text-dark-primaryText"
+                /**
+                 * todo: Update Interface debugg
+                 */
+                onClick={() => {
+                  //blogData.selectedFiles.splice(index, 1);
+                  setBlogData({
+                    ...blogData,
+                    selectedFiles: blogData.selectedFiles.splice(index, 1),
+                  });
+                }}
+              >
+                {index + 1}
+              </div>
+            ))}
+        </div>
         <div className="mb-2">
           <FileBase
             type="file"
@@ -97,6 +142,7 @@ const blogForm = () => {
           Successfully Submited
           <br />
         </span>
+        {/* Buttons */}
         <button
           type="submit"
           className="h-12 w-36 bg-primary text-primaryText rounded-3xl cursor-pointer hover:scale-105 focus:scale-95 dark:border-2"

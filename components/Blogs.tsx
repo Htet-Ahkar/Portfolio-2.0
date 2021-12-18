@@ -1,9 +1,9 @@
+import Link from "next/link";
 import React, { useEffect } from "react";
-import { useSelector, RootStateOrAny } from "react-redux";
 
 //Redux
-import { useDispatch } from "react-redux";
-import { getBlogs } from "../actions/blogs";
+import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { deleteblog, getBlog, getBlogs } from "../actions/blogs";
 
 const demoblogs = [
   { _id: 1, title: "blog", snippet: "blog snippet", viewCount: 0 },
@@ -34,7 +34,7 @@ const Blogs = () => {
     <div
       className="w-full flex flex-col justify-start items-start py-5 my-5 border-y-2 border-black bg-bg text-secondaryText
     lg:w-3/6 lg:overflow-y-scroll lg:max-h-96
-    dark:bg-dark-bg "
+    dark:bg-dark-bg dark:text-dark-secondaryText dark:border-dark-primary"
     >
       {blogs.length > 0
         ? blogs.map((blog) => (
@@ -48,7 +48,11 @@ const Blogs = () => {
                 className="truncate mr-5
               dark:text-dark-secondaryText"
               >
-                <h1 className="text-2xl font-bold ">{blog.title}</h1>
+                <Link href={`/blogs/${blog._id}`}>
+                  <h1 className="text-2xl font-bold select-none cursor-pointer">
+                    {blog.title}
+                  </h1>
+                </Link>
                 <p className="text-lg">{blog.snippet}</p>
                 <span className="text-error">
                   {blog.viewCount == 0
@@ -60,10 +64,23 @@ const Blogs = () => {
               </div>
               {/* Buttons */}
               <div className="flex flex-col gap-2 ">
-                <button className="font-semibold bg-success rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95">
+                {/* Get single blog */}
+                <button
+                  onClick={() => {
+                    dispatch(getBlog(blog._id));
+                  }}
+                  className="font-semibold bg-success rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
+                >
                   Edit
                 </button>
-                <button className="font-semibold bg-error rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95">
+                <button
+                  //Delete Blog
+                  onClick={() => {
+                    dispatch(deleteblog(blog._id));
+                    dispatch(getBlogs());
+                  }}
+                  className="font-semibold bg-error rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
+                >
                   Delete
                 </button>
               </div>

@@ -6,7 +6,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
-      height: {},
+      height: {
+        blogMobileCard: "31.25rem",
+      },
       fontFamily: {
         sans: ["Roboto Slab", "Roboto", "sans-serif"],
       },

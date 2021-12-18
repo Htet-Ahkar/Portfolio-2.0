@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
@@ -18,12 +19,12 @@ const Footer = () => {
         {/* Contact Me Components */}
         <div className="text-base font-medium flex flex-col justify-center items-center gap-2 py-4">
           <p>
-            <a href="mailto:htetahkar.htetahkar@gmail.com">
+            <Link href="mailto:htetahkar.htetahkar@gmail.com">
               Email: htetahkar.htetahkar@gmail.com
-            </a>
+            </Link>
           </p>
           <p>
-            <a href="tel:+959-969825073">Phone : +959-969825073</a>
+            <Link href="tel:+959-969825073">Phone : +959-969825073</Link>
           </p>
         </div>
       </div>
