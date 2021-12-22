@@ -3,39 +3,46 @@ import FileBase from "react-file-base64";
 
 //Redux
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { clearForm, createBlog, getBlogs, updatedBlog } from "../actions/blogs";
+import {
+  createProject,
+  getProjects,
+  updateProject,
+  clearForm,
+} from "../actions/projects";
 
-const blogForm = () => {
+const ProjectForm = () => {
   const dispatch = useDispatch();
-  const [blogData, setBlogData] = useState({
-    title: "",
-    snippet: "",
-    body: "",
-    categories: [],
+  const [projectData, setProjectData] = useState({
+    name: "",
+    description: "",
+    liveURL: "",
+    codeURL: "",
+    stacks: [],
     selectedFiles: [],
   });
   const defaultState = {
-    title: "",
-    snippet: "",
-    body: "",
-    categories: [],
+    name: "",
+    description: "",
+    liveURL: "",
+    codeURL: "",
+    stacks: [],
     selectedFiles: [],
   };
-
-  const blog = useSelector((state: RootStateOrAny) => state.blog);
-  //Get Blogs
+  //get state
+  const project = useSelector((state: RootStateOrAny) => state.project);
+  //Get Projects
   useEffect(() => {
-    dispatch(getBlogs());
+    dispatch(getProjects());
   }, []);
-  // Get Blog
+  // Get Project
   useEffect(() => {
-    setBlogData(blog == "default" ? blogData : blog);
-  }, [blog]);
+    setProjectData(project == "default" ? projectData : project);
+  }, [project]);
 
   //Clear
   const clear = (e) => {
     e.preventDefault();
-    setBlogData(defaultState);
+    setProjectData(defaultState);
     dispatch(clearForm());
   };
 
@@ -43,11 +50,11 @@ const blogForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    blog == "default"
-      ? dispatch(createBlog(blogData))
-      : dispatch(updatedBlog(blog._id, blogData));
+    project == "default"
+      ? dispatch(createProject(projectData))
+      : dispatch(updateProject(project._id, projectData));
 
-    setBlogData(defaultState);
+    setProjectData(defaultState);
     dispatch(clearForm());
   };
 
@@ -67,50 +74,65 @@ const blogForm = () => {
         <input
           className="mb-2 w-full h-12 bg-primary text-primaryText rounded-lg px-3.5 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
           type="text"
-          name="title"
-          aria-label="Title"
-          placeholder="Title"
-          value={blogData.title}
+          name="name"
+          aria-label="Name"
+          placeholder="Name"
+          value={projectData.name}
           onChange={(e) => {
-            setBlogData({ ...blogData, title: e.target.value });
+            setProjectData({ ...projectData, name: e.target.value });
           }}
         />
         <input
           className="mb-2 w-full h-12 bg-primary text-primaryText rounded-lg px-3.5 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
-          type="text"
+          type="description"
           name="snippet"
-          aria-label="Snippet"
-          placeholder="Snippet"
-          value={blogData.snippet}
+          aria-label="Description"
+          placeholder="Description"
+          value={projectData.description}
           onChange={(e) => {
-            setBlogData({ ...blogData, snippet: e.target.value });
+            setProjectData({ ...projectData, description: e.target.value });
           }}
         />
         <input
           className="mb-2 w-full h-12 bg-primary text-primaryText rounded-lg px-3.5 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
           type="text"
-          name="categories"
-          aria-label="Categories"
-          placeholder="Categories"
-          value={blogData.categories}
+          name="stacks"
+          aria-label="Stacks"
+          placeholder="Stacks"
+          value={projectData.stacks}
           onChange={(e) => {
-            setBlogData({ ...blogData, categories: e.target.value.split(",") });
+            setProjectData({
+              ...projectData,
+              stacks: e.target.value.split(","),
+            });
           }}
         />
-        <textarea
-          className="mb-2 w-full h-48 bg-primary text-primaryText rounded-lg px-3.5 py-2 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
-          name="body"
-          aria-label="Body"
-          placeholder="Body"
-          value={blogData.body}
+        <input
+          className="mb-2 w-full h-12 bg-primary text-primaryText rounded-lg px-3.5 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
+          type="text"
+          name="loveURL"
+          aria-label="LiveURL"
+          placeholder="LiveURL"
+          value={projectData.liveURL}
           onChange={(e) => {
-            setBlogData({ ...blogData, body: e.target.value });
+            setProjectData({ ...projectData, liveURL: e.target.value });
+          }}
+        />
+        <input
+          className="mb-2 w-full h-12 bg-primary text-primaryText rounded-lg px-3.5 focus:scale-105 dark:bg-dark-primary dark:text-dark-primaryText"
+          type="text"
+          name="codeURL"
+          aria-label="CodeURL"
+          placeholder="CodeURL"
+          value={projectData.codeURL}
+          onChange={(e) => {
+            setProjectData({ ...projectData, codeURL: e.target.value });
           }}
         />
         {/* Photos */}
         <div className={`my-2 h-5 flex gap-2 justify-start items-center`}>
-          {blogData.selectedFiles.length > 0 &&
-            blogData.selectedFiles.map((file, index) => (
+          {projectData.selectedFiles.length > 0 &&
+            projectData.selectedFiles.map((file, index) => (
               <div
                 key={index}
                 className="text-center h-full bg-primary text-primaryText rounded-full w-5 cursor-pointer
@@ -120,9 +142,9 @@ const blogForm = () => {
                  */
                 onClick={() => {
                   //blogData.selectedFiles.splice(index, 1);
-                  setBlogData({
-                    ...blogData,
-                    selectedFiles: blogData.selectedFiles.splice(index, 1),
+                  setProjectData({
+                    ...projectData,
+                    selectedFiles: projectData.selectedFiles.splice(index, 1),
                   });
                 }}
               >
@@ -135,9 +157,9 @@ const blogForm = () => {
             type="file"
             multiple={false}
             onDone={({ base64 }) => {
-              setBlogData({
-                ...blogData,
-                selectedFiles: [...blogData.selectedFiles, base64],
+              setProjectData({
+                ...projectData,
+                selectedFiles: [...projectData.selectedFiles, base64],
               });
             }}
           />
@@ -164,4 +186,4 @@ const blogForm = () => {
   );
 };
 
-export default blogForm;
+export default ProjectForm;

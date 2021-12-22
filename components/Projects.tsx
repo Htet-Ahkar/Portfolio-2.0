@@ -3,16 +3,17 @@ import React, { useEffect } from "react";
 
 //Redux
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { deleteblog, getBlog, getBlogs } from "../actions/blogs";
+import { getProjects, getProject, deleteProject } from "../actions/projects";
 
-const Blogs = () => {
+const Projects = () => {
   const dispatch = useDispatch();
-  //Get State
-  const blogs = useSelector((state: RootStateOrAny) => state.blogs);
+
+  // Get State
+  const projects = useSelector((state: RootStateOrAny) => state.projects);
   //Update UI
   useEffect(() => {
-    dispatch(getBlogs());
-  }, [blogs]);
+    dispatch(getProjects());
+  }, [projects]);
 
   return (
     <div
@@ -20,10 +21,10 @@ const Blogs = () => {
     lg:w-3/6 lg:overflow-y-scroll lg:max-h-96
     dark:bg-dark-bg dark:text-dark-secondaryText dark:border-dark-primary"
     >
-      {blogs.length > 0
-        ? blogs.map((blog) => (
+      {projects.length > 0
+        ? projects.map((project) => (
             <div
-              key={blog._id}
+              key={project._id}
               className="w-full flex justify-between py-2 border-black border-b  hover:border-b-4
               dark:border-dark-primary"
             >
@@ -32,35 +33,35 @@ const Blogs = () => {
                 className="truncate mr-5
               dark:text-dark-secondaryText"
               >
-                <Link href={`/blogs/${blog._id}`}>
+                <Link href={`/projects`}>
                   <h1 className="text-2xl font-bold select-none cursor-pointer">
-                    {blog.title}
+                    {project.name}
                   </h1>
                 </Link>
-                <p className="text-lg">{blog.snippet}</p>
+                <p className="text-lg">{project.description}</p>
                 <span className="text-error">
-                  {blog.viewCount == 0
+                  {project.viewCount == 0
                     ? `There is no viewer.`
-                    : `${blog.viewCount} ${
-                        blog.viewCount > 1 ? `views` : `view`
+                    : `${project.viewCount} ${
+                        project.viewCount > 1 ? `views` : `view`
                       }`}
                 </span>
               </div>
               {/* Buttons */}
               <div className="flex flex-col gap-2 ">
-                {/* Get single blog */}
+                {/* Get single project */}
                 <button
                   onClick={() => {
-                    dispatch(getBlog(blog._id));
+                    dispatch(getProject(project._id));
                   }}
                   className="font-semibold bg-success rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >
                   Edit
                 </button>
                 <button
-                  //Delete Blog
+                  //Delete Project
                   onClick={() => {
-                    dispatch(deleteblog(blog._id));
+                    dispatch(deleteProject(project._id));
                   }}
                   className="font-semibold bg-error rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >
@@ -74,4 +75,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default Projects;
