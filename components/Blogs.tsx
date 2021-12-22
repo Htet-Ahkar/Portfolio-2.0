@@ -5,23 +5,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { deleteblog, getBlog, getBlogs } from "../actions/blogs";
 
-const demoblogs = [
-  { _id: 1, title: "blog", snippet: "blog snippet", viewCount: 0 },
-  {
-    _id: 2,
-    title: "blog asdfasdfsadfsadfasdfsadfasdfsadfsadfsadfasdf",
-    snippet: "blog snippet1asdffasdf asdf sadfasdfsadfasdf",
-    viewCount: 100,
-  },
-  { _id: 3, title: "blog", snippet: "blog snippet2", viewCount: 1 },
-  { _id: 6, title: "blog", snippet: "blog snippet5", viewCount: 100 },
-  { _id: 5, title: "blog", snippet: "blog snippet4", viewCount: 100 },
-  { _id: 4, title: "blog", snippet: "blog snippet3", viewCount: 100 },
-  { _id: 7, title: "blog", snippet: "blog snippet6", viewCount: 100 },
-  { _id: 8, title: "blog", snippet: "blog snippet7", viewCount: 100 },
-  { _id: 9, title: "blog", snippet: "blog snippet8", viewCount: 100 },
-];
-
 const Blogs = () => {
   //Get Blogs
   const dispatch = useDispatch();

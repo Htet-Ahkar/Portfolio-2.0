@@ -72,7 +72,7 @@ const Header = () => {
         >
           <img
             className="w-full h-ful"
-            src={`/SocialMedias Icons/LightAndDarkIcons/${
+            src={`/LightAndDarkIcons/${
               isDarkMode ? `moon-svgrepo-com.svg` : `day-sunny.svg`
             }`}
           />
@@ -90,21 +90,28 @@ const Header = () => {
         ))}
         {/* Mobile Menu */}
         <div
-          className={`transition-all duration-300 ease-in-out h-12 w-12 md:hidden cursor-pointer select-none ${
+          className={`transition-all duration-300 ease-in-out h-12 w-12 md:hidden cursor-pointer select-none flex items-center justify-center ${
             isMenuOpen && `rotate-90`
           }`}
           onClick={toggleMenu}
         >
-          <img
-            src={`${
-              isDarkMode ? `menu-svgrepo-com-dark.svg` : `menu-svgrepo-com.svg`
-            }`}
-          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            className="dark:fill-dark-primary"
+          >
+            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+          </svg>
         </div>
       </div>
       {/* Mobile Menu Btns */}
       {isMenuOpen && (
-        <div className="absolute top-24 lg:top-36 flex flex-col shadow-md w-screen -left-1 bg-bg dark:bg-dark-bg">
+        <div
+          className="absolute top-24 flex flex-col shadow-md w-screen -left-1 bg-bg z-10
+        lg:top-36
+        dark:bg-dark-bg"
+        >
           {buttons.map((btn) => (
             <a
               href={btn.url}

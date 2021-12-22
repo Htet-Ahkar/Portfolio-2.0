@@ -1,47 +1,16 @@
-import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 //Dependencies
 import moment from "moment";
+//API
+import * as api from "../../api";
 
 //Redux
-import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { getBlogs } from "../../actions/blogs";
+import { useDispatch } from "react-redux";
+import { increaseViewCount } from "../../actions/blogs";
 
-const demoblogs = [
-  {
-    _id: 1,
-    title: "blog",
-    snippet: "blog snippet",
-    viewCount: 0,
-    updatedAt: "2021-12-17T02:18:58.857+00:00",
-    selectedFiles: ["/Demo_Image.jpg"],
-  },
-  {
-    _id: 2,
-    title: "blog asdfasdfsadfsadfasdfsadfasdfsadfsadfsadfasdf",
-    snippet: "blog snippet1asdffasdf asdf sadfasdfsadfasdf",
-    viewCount: 100,
-    updatedAt: "2021-12-17T02:18:58.857+00:00",
-    selectedFiles: ["/Demo_Image.jpg"],
-  },
-  {
-    _id: 3,
-    title: "This Blog Title is Long and Bold. So Long It take two lines.",
-    snippet: "blog snippet2",
-    viewCount: 1,
-    updatedAt: "2021-12-17T02:18:58.857+00:00",
-    selectedFiles: ["/Demo_Image.jpg"],
-  },
-];
-
-const blogs = () => {
-  //Get Blogs
+const blogs = ({ blogs }) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getBlogs());
-  }, []);
-  const blogs = useSelector((state: RootStateOrAny) => state.blogs);
 
   return (
     <div
@@ -62,14 +31,18 @@ const blogs = () => {
             {/* Image and text container */}
             <div className="w-full flex flex-col items-center mb-2">
               {/* Image */}
-              <Image
-                src={blog.selectedFiles[0]}
-                alt={blog.title}
-                width={390}
-                height={250}
-                className="rounded-md"
-                placeholder="empty"
-              />
+              {blog.selectedFiles[0] === undefined ? (
+                <div></div>
+              ) : (
+                <Image
+                  src={blog.selectedFiles[0]}
+                  alt={blog.title}
+                  width={370}
+                  height={230}
+                  className="rounded-md"
+                  placeholder="empty"
+                />
+              )}
               {/* Headers and snippet */}
               <div
                 className="flex flex-col gap-5 justify-between items-center w-full text-center pt-3 mt-2 overflow-clip
@@ -125,7 +98,11 @@ const blogs = () => {
                     className="text-sm text-gray-700
               dark:text-gray-400"
                   >
-                    {blog.viewCount}
+                    {blog.viewCount == 0
+                      ? `Be The First.`
+                      : `${blog.viewCount} ${
+                          blog.viewCount > 1 ? `views` : `view`
+                        }`}
                   </span>
                 </div>
               </div>
@@ -133,6 +110,9 @@ const blogs = () => {
               <button
                 className="w-24 h-10 bg-primary text-primaryText rounded-md text-base font-semibold hover:scale-105 focus:scale-95
               dark:bg-dark-primary dark:text-dark-primaryText"
+                onClick={() => {
+                  dispatch(increaseViewCount(blog._id));
+                }}
               >
                 <Link href={`/blogs/${blog._id}`}>Read More</Link>
               </button>
@@ -144,3 +124,13 @@ const blogs = () => {
 };
 
 export default blogs;
+
+export async function getServerSideProps() {
+  const { data } = await api.fetchBlogs();
+
+  return {
+    props: {
+      blogs: data,
+    },
+  };
+}

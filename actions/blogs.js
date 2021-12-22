@@ -50,3 +50,13 @@ export const updatedBlog = (id, blog) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const increaseViewCount = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.increaseViewCount(id);
+
+    dispatch({ type: "UPDATE", payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};

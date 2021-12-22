@@ -9,3 +9,4 @@ export const deleteBlog = (id) => axios.delete(`${url}/${id}`);
 export const createBlogs = (newBlog) => axios.post(url, newBlog);
 export const updateBlog = (id, updatedBlog) =>
   axios.patch(`${url}/${id}`, updatedBlog);
+export const increaseViewCount = (id) => axios.patch(`${url}/${id}/viewCount`);
