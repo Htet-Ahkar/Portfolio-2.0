@@ -6,3 +6,5 @@ export { default as Blogs } from "./Blogs";
 export { default as Carousel } from "./Carousel";
 export { default as ProjectForm } from "./ProjectForm";
 export { default as Projects } from "./Projects";
+export { default as ProjectCard } from "./ProjectCard";
+export { default as ProjectCardCarousel } from "./ProjectCardCarousel";
