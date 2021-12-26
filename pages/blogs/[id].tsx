@@ -9,6 +9,10 @@ import moment from "moment";
 const blog = ({ blog }) => {
   const router = useRouter();
 
+  //Split body to chunks
+  const chunks = blog.body.split("<br/>");
+  console.log(chunks);
+
   return (
     <div
       className="flex flex-col items-center justify-start min-h-screen p-5 bg-bg
@@ -17,7 +21,8 @@ const blog = ({ blog }) => {
     >
       <div
         className="w-full h-full flex flex-col gap-5 items-center justify-start
-      md:w-blogDetailsWidth"
+      md:w-blogDetailsWidth
+      prose"
       >
         {/* Title */}
         <h1
@@ -37,16 +42,17 @@ const blog = ({ blog }) => {
           className="w-full justify-center items-start pl-3 text-gray-500 text-sm
         md:text-base"
         >
-          {moment(blog.updatedAt).format("MMM DD, YYYY")}
+          {moment(blog.createdAt).format("MMM DD, YYYY")}
         </span>
         {/* Body */}
-        <p
+        <div
           className="text-base text-gray-900
         dark:text-gray-100
         md:text-lg"
         >
-          {blog.body}
-        </p>
+          {chunks.length > 0 &&
+            chunks.map((chunk, index) => <p key={index}>{chunk}</p>)}
+        </div>
         {/* Categories */}
         <div className="w-full flex gap-2 flex-wrap">
           {blog.categories.map((category, index) => (

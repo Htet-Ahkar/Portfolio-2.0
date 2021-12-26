@@ -31,7 +31,15 @@ function admin() {
   return (
     isAdmin && (
       <div className="flex flex-col items-center justify-start min-h-screen bg-bg dark:bg-dark-bg text-secondaryText dark:text-dark-secondaryText px-2">
-        <div className="w-full flex justify-end items-center my-5">
+        <div
+          className={`w-full flex items-center my-5 ${
+            isBlogs ? `justify-between` : `justify-end`
+          }`}
+        >
+          {/* Seperator */}
+          {isBlogs && (
+            <div className="bg-primary dark:bg-dark-primary rounded-md p-2 px-3">{`<br/>`}</div>
+          )}
           {/* Btn */}
           <div
             className="relative w-48 h-12 bg-gray-300 rounded-full

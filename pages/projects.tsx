@@ -1,20 +1,10 @@
+//API
+import * as api from "../api";
+
 // Components
-import { useEffect } from "react";
 import { ProjectCard } from "../components";
 
-//Redux
-import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-//Actions
-import { getProjects } from "../actions/projects";
-
-const projects = () => {
-  const dispatch = useDispatch();
-  //Get Projects
-  useEffect(() => {
-    dispatch(getProjects());
-  }, []);
-  const projectsData = useSelector((state: RootStateOrAny) => state.projects);
-
+const projects = ({ projects }) => {
   return (
     <div
       className="min-h-screen w-full flex justify-center items-center bg-bg text-secondaryText p-5
@@ -26,8 +16,8 @@ const projects = () => {
       md:grid-cols-2
       lg:grid-cols-3"
       >
-        {projectsData.length > 0
-          ? projectsData.map((project) => (
+        {projects.length > 0
+          ? projects.map((project) => (
               <div
                 className="flex justify-center items-center"
                 key={project._id}
@@ -42,3 +32,13 @@ const projects = () => {
 };
 
 export default projects;
+
+export async function getServerSideProps() {
+  const { data } = await api.fetchProjects();
+
+  return {
+    props: {
+      projects: data.reverse(),
+    },
+  };
+}
