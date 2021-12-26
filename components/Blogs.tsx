@@ -1,18 +1,50 @@
+import { useEffect } from "react";
 import Link from "next/link";
-import React, { useEffect } from "react";
+//Dependencies
+import axios from "axios";
 
 //Redux
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { deleteblog, getBlog, getBlogs } from "../actions/blogs";
+// Action
+import { getBlogs, getBlog, deleteblog } from "../actions/blogs.js";
 
 const Blogs = () => {
   const dispatch = useDispatch();
-  //Get State
-  const blogs = useSelector((state: RootStateOrAny) => state.blogs);
-  //Update UI
+
+  // FetchData
+  const fetchBlogs = async () => {
+    const {
+      data: { data },
+    } = await axios.get("/api/blogs");
+    dispatch(getBlogs(data));
+  };
   useEffect(() => {
-    dispatch(getBlogs());
+    fetchBlogs();
+  }, []);
+  // Get Redux Blogs
+  const blogs = useSelector((state: RootStateOrAny) => state.blogs);
+  // Update UI
+  useEffect(() => {
+    fetchBlogs();
   }, [blogs]);
+
+  // Get blog
+  const getBlogInComponent = async (id) => {
+    const {
+      data: { data },
+    } = await axios.get(`/api/blogs/${id}`);
+    //Update Redux blogs
+    dispatch(getBlog(data));
+  };
+
+  // Delete Blog
+  const deleteblogInComponent = async (id) => {
+    const {
+      data: { data },
+    } = await axios.delete(`/api/blogs/${id}`);
+    //Update Redux blogs
+    dispatch(deleteblog(data));
+  };
 
   return (
     <div
@@ -51,7 +83,7 @@ const Blogs = () => {
                 {/* Get single blog */}
                 <button
                   onClick={() => {
-                    dispatch(getBlog(blog._id));
+                    getBlogInComponent(blog._id);
                   }}
                   className="font-semibold bg-success rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >
@@ -60,7 +92,7 @@ const Blogs = () => {
                 <button
                   //Delete Blog
                   onClick={() => {
-                    dispatch(deleteblog(blog._id));
+                    deleteblogInComponent(blog._id);
                   }}
                   className="font-semibold bg-error rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >

@@ -1,19 +1,53 @@
+import { useEffect } from "react";
 import Link from "next/link";
-import React, { useEffect } from "react";
+
+//Dependencies
+import axios from "axios";
 
 //Redux
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+//Actions
 import { getProjects, getProject, deleteProject } from "../actions/projects";
 
 const Projects = () => {
   const dispatch = useDispatch();
 
-  // Get State
+  // FetchData
+  const fetchProjects = async () => {
+    const {
+      data: { data },
+    } = await axios.get("/api/projects");
+    dispatch(getProjects(data));
+  };
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  // Get Redux State projects
   const projects = useSelector((state: RootStateOrAny) => state.projects);
+
   //Update UI
   useEffect(() => {
-    dispatch(getProjects());
+    fetchProjects();
   }, [projects]);
+
+  // Get Project
+  const getProjectInComponent = async (id) => {
+    const {
+      data: { data },
+    } = await axios.get(`/api/projects/${id}`);
+    //Update Redux projects
+    dispatch(getProject(data));
+  };
+
+  // Delete Projects
+  const deleteProjectInComponent = async (id) => {
+    const {
+      data: { data },
+    } = await axios.delete(`/api/projects/${id}`);
+    //Update Redux projects
+    dispatch(deleteProject(data));
+  };
 
   return (
     <div
@@ -52,7 +86,7 @@ const Projects = () => {
                 {/* Get single project */}
                 <button
                   onClick={() => {
-                    dispatch(getProject(project._id));
+                    getProjectInComponent(project._id);
                   }}
                   className="font-semibold bg-success rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >
@@ -61,7 +95,7 @@ const Projects = () => {
                 <button
                   //Delete Project
                   onClick={() => {
-                    dispatch(deleteProject(project._id));
+                    deleteProjectInComponent(project._id);
                   }}
                   className="font-semibold bg-error rounded-lg px-5 py-1 hover:scale-105 focus:scale-95 hover:opacity-95"
                 >

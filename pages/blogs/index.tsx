@@ -1,16 +1,27 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 //Dependencies
 import moment from "moment";
-//API
-import * as api from "../../api";
+import axios from "axios";
 
-//Redux
-import { useDispatch } from "react-redux";
-import { increaseViewCount } from "../../actions/blogs";
+const blogs = () => {
+  // FetchData
+  const [data, setData] = useState([]);
+  const fetchBlogs = async () => {
+    const {
+      data: { data },
+    } = await axios.get("/api/blogs");
+    setData(data);
+  };
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
 
-const blogs = ({ blogs }) => {
-  const dispatch = useDispatch();
+  //Increase ViewCounts
+  const increaseView = async (id) => {
+    await axios.put(`/api/blogs/${id}/viewCount`);
+  };
 
   return (
     <div
@@ -20,8 +31,8 @@ const blogs = ({ blogs }) => {
       md:px-12 md:grid-cols-2
       lg:grid-cols-3"
     >
-      {blogs.length > 0
-        ? blogs.map((blog) => (
+      {data.length > 0
+        ? data.map((blog) => (
             <div
               key={blog._id}
               className="w-full h-blogMobileCard flex flex-col justify-between items-center rounded-md shadow-lg py-5 px-5
@@ -111,7 +122,7 @@ const blogs = ({ blogs }) => {
                   className="w-24 h-10 bg-primary text-primaryText rounded-md text-base font-semibold hover:scale-105 focus:scale-95
               dark:bg-dark-primary dark:text-dark-primaryText"
                   onClick={() => {
-                    dispatch(increaseViewCount(blog._id));
+                    increaseView(blog._id);
                   }}
                 >
                   <Link href={`/blogs/${blog._id}`}>Read More</Link>
@@ -125,13 +136,3 @@ const blogs = ({ blogs }) => {
 };
 
 export default blogs;
-
-export async function getServerSideProps() {
-  const { data } = await api.fetchBlogs();
-
-  return {
-    props: {
-      blogs: data.reverse(),
-    },
-  };
-}

@@ -1,4 +1,3 @@
-import * as api from "../api";
 //ACTION_TYPES
 import {
   FETCH_ALL,
@@ -10,60 +9,40 @@ import {
 } from "../constants/actiion_types";
 
 //Action Creator
-export const getBlogs = () => async (dispatch) => {
+export const getBlogs = (data) => async (dispatch) => {
   try {
-    const { data } = await api.fetchBlogs();
-
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getBlog = (id) => async (dispatch) => {
+export const getBlog = (data) => async (dispatch) => {
   try {
-    const { data } = await api.fetchBlog(id);
-
     dispatch({ type: FETCH_BLOG, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const deleteblog = (id) => async (dispatch) => {
+export const deleteblog = (data) => async (dispatch) => {
   try {
-    const { data } = await api.deleteBlog(id);
-
     dispatch({ type: DELETE, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const createBlog = (blog) => async (dispatch) => {
+export const createBlog = (data) => async (dispatch) => {
   try {
-    const { data } = await api.createBlogs(blog);
-
     dispatch({ type: CREATE, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updatedBlog = (id, blog) => async (dispatch) => {
+export const updatedBlog = (data) => async (dispatch) => {
   try {
-    const { data } = await api.updateBlog(id, blog);
-
-    dispatch({ type: UPDATE, payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const increaseViewCount = (id) => async (dispatch) => {
-  try {
-    const { data } = await api.increaseViewCount(id);
-
     dispatch({ type: UPDATE, payload: data });
   } catch (error) {
     console.log(error);

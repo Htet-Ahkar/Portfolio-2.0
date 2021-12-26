@@ -1,10 +1,23 @@
-//API
-import * as api from "../api";
+import { useEffect, useState } from "react";
+//Dependencies
+import axios from "axios";
 
 // Components
 import { ProjectCard } from "../components";
 
-const projects = ({ projects }) => {
+const projects = () => {
+  // FetchData
+  const [data, setData] = useState([]);
+  const fetchBlogs = async () => {
+    const {
+      data: { data },
+    } = await axios.get("/api/projects");
+    setData(data);
+  };
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
   return (
     <div
       className="min-h-screen w-full flex justify-center items-center bg-bg text-secondaryText p-5
@@ -16,8 +29,8 @@ const projects = ({ projects }) => {
       md:grid-cols-2
       lg:grid-cols-3"
       >
-        {projects.length > 0
-          ? projects.map((project) => (
+        {data.length > 0
+          ? data.map((project) => (
               <div
                 className="flex justify-center items-center"
                 key={project._id}
@@ -32,13 +45,3 @@ const projects = ({ projects }) => {
 };
 
 export default projects;
-
-export async function getServerSideProps() {
-  const { data } = await api.fetchProjects();
-
-  return {
-    props: {
-      projects: data.reverse(),
-    },
-  };
-}

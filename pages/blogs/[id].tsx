@@ -11,7 +11,6 @@ const blog = ({ blog }) => {
 
   //Split body to chunks
   const chunks = blog.body.split("<br/>");
-  console.log(chunks);
 
   return (
     <div
@@ -83,7 +82,9 @@ const blog = ({ blog }) => {
 export default blog;
 
 export async function getServerSideProps({ params: { id } }) {
-  const { data } = await api.fetchBlog(id);
+  const {
+    data: { data },
+  } = await api.fetchBlog(id);
 
   return {
     props: {

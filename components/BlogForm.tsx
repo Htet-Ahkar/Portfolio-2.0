@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+// Dependencies
+import axios from "axios";
 import FileBase from "react-file-base64";
 
 //Redux
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { clearForm, createBlog, getBlogs, updatedBlog } from "../actions/blogs";
+import { clearForm } from "../actions/blogs";
 
 const blogForm = () => {
   const dispatch = useDispatch();
@@ -22,11 +24,19 @@ const blogForm = () => {
     selectedFiles: [],
   };
 
+  // Get Redux blog
   const blog = useSelector((state: RootStateOrAny) => state.blog);
-  //Get Blogs
-  useEffect(() => {
-    dispatch(getBlogs());
-  }, []);
+
+  // Create Blog
+  const createBlog = async (data) => {
+    await axios.post(`/api/blogs`, data);
+  };
+
+  // Update Blog
+  const updatedBlog = async (id, data) => {
+    await axios.put(`/api/blogs/${id}`, data);
+  };
+
   // Get Blog
   useEffect(() => {
     setBlogData(blog == "default" ? blogData : blog);
@@ -43,9 +53,7 @@ const blogForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    blog == "default"
-      ? dispatch(createBlog(blogData))
-      : dispatch(updatedBlog(blog._id, blogData));
+    blog == "default" ? createBlog(blogData) : updatedBlog(blog._id, blogData);
 
     setBlogData(defaultState);
     dispatch(clearForm());

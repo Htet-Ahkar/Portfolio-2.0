@@ -11,23 +11,18 @@ type projectDataProps = {
     createdAt: string;
   };
 };
+
 //Dependencies
 import moment from "moment";
+import axios from "axios";
 
 //Components
 import { ProjectCardCarousel } from ".";
 
-//Redux
-import { useDispatch } from "react-redux";
-//Actions
-import { increaseViewCount } from "../actions/projects";
-
 const ProjectCard = ({ project }: projectDataProps) => {
-  const dispatch = useDispatch();
-
-  //Update Views
-  const updateViewCount = (id) => {
-    dispatch(increaseViewCount(id));
+  //Increase ViewCounts
+  const increaseView = async (id) => {
+    await axios.put(`/api/projects/${id}/viewCount`);
   };
 
   return (
@@ -61,7 +56,7 @@ const ProjectCard = ({ project }: projectDataProps) => {
         {project.description}
       </p>
       {/* Stacks */}
-      <div className="w-full flex justify-start items-center gap-2">
+      <div className="w-full flex justify-start items-center gap-2 flex-wrap">
         {project.stacks.length > 0 &&
           project.stacks.map((stack) => (
             <div
@@ -126,7 +121,7 @@ const ProjectCard = ({ project }: projectDataProps) => {
             dark:bg-dark-primary
             "
               onClick={() => {
-                updateViewCount(project._id);
+                increaseView(project._id);
               }}
             >
               <svg
@@ -151,7 +146,7 @@ const ProjectCard = ({ project }: projectDataProps) => {
             transition-all duration-500 hover:scale-105 focus:scale-95
           dark:bg-dark-primary"
             onClick={() => {
-              updateViewCount(project._id);
+              increaseView(project._id);
             }}
           >
             <svg

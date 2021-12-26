@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
-import FileBase from "react-file-base64";
+import { useEffect, useState } from "react";
 
+// Dependencies
+import axios from "axios";
+import FileBase from "react-file-base64";
 //Redux
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import {
-  createProject,
-  getProjects,
-  updateProject,
-  clearForm,
-} from "../actions/projects";
+import { clearForm } from "../actions/projects";
 
 const ProjectForm = () => {
   const dispatch = useDispatch();
@@ -28,13 +25,20 @@ const ProjectForm = () => {
     stacks: [],
     selectedFiles: [],
   };
-  //get state
+  // Get Redux projects
   const project = useSelector((state: RootStateOrAny) => state.project);
-  //Get Projects
-  useEffect(() => {
-    dispatch(getProjects());
-  }, []);
-  // Get Project
+
+  // Create Project
+  const createProject = async (data) => {
+    await axios.post(`/api/projects`, data);
+  };
+
+  // Update Project
+  const updateProject = async (id, data) => {
+    await axios.put(`/api/projects/${id}`, data);
+  };
+
+  // Get Projects
   useEffect(() => {
     setProjectData(project == "default" ? projectData : project);
   }, [project]);
@@ -51,8 +55,8 @@ const ProjectForm = () => {
     e.preventDefault();
 
     project == "default"
-      ? dispatch(createProject(projectData))
-      : dispatch(updateProject(project._id, projectData));
+      ? createProject(projectData)
+      : updateProject(project._id, projectData);
 
     setProjectData(defaultState);
     dispatch(clearForm());
