@@ -9,7 +9,7 @@ import {
 } from "../constants/actiion_types";
 
 //Action Creator
-export const getProjects = (data) => async (dispatch) => {
+export const getProjects = (data) => (dispatch) => {
   try {
     dispatch({ type: FETCH_ALL_PROJECTS, payload: data });
   } catch (error) {
@@ -17,7 +17,7 @@ export const getProjects = (data) => async (dispatch) => {
   }
 };
 
-export const getProject = (data) => async (dispatch) => {
+export const getProject = (data) => (dispatch) => {
   try {
     dispatch({ type: FETCH_PROJECT, payload: data });
   } catch (error) {
@@ -25,7 +25,7 @@ export const getProject = (data) => async (dispatch) => {
   }
 };
 
-export const deleteProject = (data) => async (dispatch) => {
+export const deleteProject = (data) => (dispatch) => {
   try {
     dispatch({ type: DELETE_PROJECT, payload: data });
   } catch (error) {
@@ -33,7 +33,7 @@ export const deleteProject = (data) => async (dispatch) => {
   }
 };
 
-export const createProject = (data) => async (dispatch) => {
+export const createProject = (data) => (dispatch) => {
   try {
     dispatch({ type: CREATE_PROJECT, payload: data });
   } catch (error) {
@@ -41,7 +41,7 @@ export const createProject = (data) => async (dispatch) => {
   }
 };
 
-export const updateProject = (data) => async (dispatch) => {
+export const updateProject = (data) => (dispatch) => {
   try {
     dispatch({ type: UPDATE_PROJECT, payload: data });
   } catch (error) {
@@ -49,7 +49,7 @@ export const updateProject = (data) => async (dispatch) => {
   }
 };
 
-export const clearForm = () => async (dispatch) => {
+export const clearForm = () => (dispatch) => {
   try {
     dispatch({ type: CLEAR, payload: ["default"] });
   } catch (error) {

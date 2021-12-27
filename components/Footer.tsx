@@ -1,15 +1,45 @@
+import { useEffect } from "react";
 import Link from "next/link";
-import React from "react";
+
+// Next Atuh
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Footer = () => {
+  //Auth
+  const { data: session } = useSession();
+  useEffect(() => {
+    const user = session && session.user.name;
+    const email = session && session.user.email;
+
+    const USER = process.env.NEXT_PUBLIC_GITHUB_USER;
+    const EMAIL = process.env.NEXT_PUBLIC_GITHUB_EMAIL;
+
+    if (session && user !== USER && email !== EMAIL) {
+      window.alert("You are not admin!!! Automatically Signout!");
+      signOut();
+    }
+  }, [session]);
+
   return (
-    <div className="text-primaryText bg-primary pb-5 dark:bg-dark-primary dark:text-dark-primaryText md:grid md:grid-cols-3 md:grid-rows-2 md:h-52">
+    <div
+      className="text-primaryText bg-primary pb-5 
+    dark:bg-dark-primary dark:text-dark-primaryText 
+    md:grid md:grid-cols-3 md:grid-rows-2 md:h-52"
+    >
       {/* Header */}
-      <div>
-        <div className="h-20 w-full flex justify-center items-center">
+      <Link href={`/api/auth/${session ? `signout` : `signin`}`}>
+        <div
+          className={`h-20 w-full flex justify-center items-center select-none ${
+            session && "text-success"
+          }`}
+          onClick={(e) => {
+            e.preventDefault();
+            session ? signOut() : signIn();
+          }}
+        >
           <h1 className="text-5xl font-bold">Xero</h1>
         </div>
-      </div>
+      </Link>
       {/* Contact Me */}
       <div className="md:col-start-3">
         {/* Contact Me Header */}

@@ -17,13 +17,17 @@ export default function Home() {
       >
         {/* Image Container */}
         <div className="w-full flex justify-center items-center">
-          <div className="w-60 h-60 relative">
+          <div
+            className="w-60 h-60 relative
+          lg:w-80 lg:h-80"
+          >
             <Image
               src="/Me.jpg"
               layout="fill"
               objectFit="contain"
               alt="htet_Ahkar"
-              className="rounded-3xl"
+              className="rounded-3xl
+              lg:rounded-full"
             />
           </div>
         </div>

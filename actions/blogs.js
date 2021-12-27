@@ -9,7 +9,7 @@ import {
 } from "../constants/actiion_types";
 
 //Action Creator
-export const getBlogs = (data) => async (dispatch) => {
+export const getBlogs = (data) => (dispatch) => {
   try {
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
@@ -17,7 +17,7 @@ export const getBlogs = (data) => async (dispatch) => {
   }
 };
 
-export const getBlog = (data) => async (dispatch) => {
+export const getBlog = (data) => (dispatch) => {
   try {
     dispatch({ type: FETCH_BLOG, payload: data });
   } catch (error) {
@@ -25,7 +25,7 @@ export const getBlog = (data) => async (dispatch) => {
   }
 };
 
-export const deleteblog = (data) => async (dispatch) => {
+export const deleteblog = (data) => (dispatch) => {
   try {
     dispatch({ type: DELETE, payload: data });
   } catch (error) {
@@ -33,7 +33,7 @@ export const deleteblog = (data) => async (dispatch) => {
   }
 };
 
-export const createBlog = (data) => async (dispatch) => {
+export const createBlog = (data) => (dispatch) => {
   try {
     dispatch({ type: CREATE, payload: data });
   } catch (error) {
@@ -49,7 +49,7 @@ export const updatedBlog = (data) => async (dispatch) => {
   }
 };
 
-export const clearForm = () => async (dispatch) => {
+export const clearForm = () => (dispatch) => {
   try {
     dispatch({ type: CLEAR, payload: ["default"] });
   } catch (error) {

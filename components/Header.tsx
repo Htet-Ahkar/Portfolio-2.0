@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 //Constants
 const buttons = [
@@ -14,6 +15,9 @@ const Header = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // Next Auth
+  const { data: session } = useSession();
 
   //Darkmode on
   useEffect(() => {
@@ -62,7 +66,10 @@ const Header = () => {
       {/* Logo and DarkMode Btn */}
       <div className="flex items-center">
         <h1 className="px-10 text-3xl font-bold dark:text-secondary md:text-5xl lg:px-20">
-          <Link href={router.pathname == "/" ? "/admin" : "/"}>
+          {/* to change */}
+          <Link
+            href={router.pathname == "/" ? `${session ? `/admin` : `/`}` : "/"}
+          >
             {isAdmin ? "Admin" : "Xero"}
           </Link>
         </h1>

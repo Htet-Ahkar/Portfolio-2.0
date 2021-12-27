@@ -25,8 +25,8 @@ const blogs = () => {
 
   return (
     <div
-      className="grid gap-5 grid-cols-1 min-h-screen px-5 py-12 bg-bg 
-    dark:bg-dark-bg
+      className="grid gap-5 grid-cols-1 min-h-screen px-5 py-12 bg-bg text-secondaryText 
+    dark:bg-dark-bg dark:text-dark-secondaryText
       sm:px-20
       md:px-12 md:grid-cols-2
       lg:grid-cols-3"
@@ -43,26 +43,25 @@ const blogs = () => {
               <div className="w-full flex flex-col items-center mb-2">
                 {/* Image */}
                 {blog.selectedFiles[0] === undefined ? (
-                  <div></div>
+                  <div className="h-64">{`There's no feature image.`}</div>
                 ) : (
-                  <Image
-                    src={blog.selectedFiles[0]}
-                    alt={blog.title}
-                    width={370}
-                    height={230}
-                    className="rounded-md"
-                    placeholder="empty"
-                  />
+                  <div className="w-80 h-64 relative">
+                    <Image
+                      src={blog.selectedFiles[0]}
+                      alt={blog.title}
+                      layout="fill"
+                      objectFit="contain"
+                      className="rounded-md"
+                      placeholder="empty"
+                    />
+                  </div>
                 )}
                 {/* Headers and snippet */}
                 <div
                   className="flex flex-col gap-5 justify-between items-center w-full text-center pt-3 mt-2 overflow-clip
               dark:border-t dark:border-t-white"
                 >
-                  <h1
-                    className="text-xl font-boldr w-full text-secondaryText font-bold
-                dark:text-dark-secondaryText"
-                  >
+                  <h1 className="text-xl font-boldr w-full font-bold">
                     {blog.title}
                   </h1>
                   <p className="text-base text-gray-600">{blog.snippet}</p>
@@ -130,7 +129,7 @@ const blogs = () => {
               </div>
             </div>
           ))
-        : `Sorry!!! There's nothing to show.`}
+        : `Loading.....`}
     </div>
   );
 };

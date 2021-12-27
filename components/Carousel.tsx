@@ -17,7 +17,7 @@ import "swiper/css/pagination";
 const Carousel = (props: fileProps) => {
   return (
     <Swiper
-      className="w-full h-64 my-5
+      className="w-full h-64 my-5 flex justify-center items-center
       md:h-imageContainer md:my-12"
       tag="section"
       wrapperTag="ul"
@@ -32,7 +32,7 @@ const Carousel = (props: fileProps) => {
         <SwiperSlide
           tag="li"
           key={index}
-          className="flex justify-center items-center"
+          className="flex justify-center items-center relative"
         >
           <Image
             src={file}

@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import dbConnect from "../../../../utils/dbConnect";
 import Blog from "../../../../models/blogs";
 
@@ -9,6 +10,8 @@ export default async (req, res) => {
     query: { id },
     method,
   } = req;
+
+  const session = await getSession({ req });
 
   switch (method) {
     case "GET":
@@ -25,31 +28,39 @@ export default async (req, res) => {
       }
       break;
     case "PUT":
-      try {
-        const data = await Blog.findByIdAndUpdate(id, req.body, {
-          new: true,
-          runValidators: true,
-        });
-        if (!data) {
-          return res.status(400).json({ success: false });
-        }
+      if (!session) {
+        res.status(401).json({ error: "Unauthenticated User" });
+      } else {
+        try {
+          const data = await Blog.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true,
+          });
+          if (!data) {
+            return res.status(400).json({ success: false });
+          }
 
-        res.status(200).json({ success: true, data });
-      } catch (error) {
-        res.status(400).json({ success: false });
+          res.status(200).json({ success: true, data });
+        } catch (error) {
+          res.status(400).json({ success: false });
+        }
       }
       break;
     case "DELETE":
-      try {
-        const deletedBlog = await Blog.deleteOne({ _id: id });
+      if (!session) {
+        res.status(401).json({ error: "Unauthenticated User" });
+      } else {
+        try {
+          const deletedBlog = await Blog.deleteOne({ _id: id });
 
-        if (!deletedBlog) {
-          return res.status(400).json({ success: false });
+          if (!deletedBlog) {
+            return res.status(400).json({ success: false });
+          }
+
+          res.status(200).json({ success: true, data: {} });
+        } catch (error) {
+          res.status(400).json({ success: false });
         }
-
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        res.status(400).json({ success: false });
       }
       break;
 

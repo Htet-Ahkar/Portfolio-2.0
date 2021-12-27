@@ -7,6 +7,9 @@ import "../styles/globals.scss";
 //Layout
 import { Layout } from "../components";
 
+//Next Auth
+import { SessionProvider } from "next-auth/react";
+
 //Redux
 //Reducers
 import { Provider } from "react-redux";
@@ -16,7 +19,7 @@ import reducers from "../reducers";
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ session, Component, pageProps }) {
   //For Header Title
   const [pathName, setPathName] = useState("You Are Awesome");
   const router = useRouter();
@@ -38,15 +41,17 @@ function MyApp({ Component, pageProps }) {
   }, [router.pathname]);
 
   return (
-    <Provider store={store}>
-      <Layout>
-        <Head>
-          <title>Htet Ahkar | {pathName} </title>
-          <link rel="icon" href="/icon.jpeg" />
-        </Head>
-        <Component {...pageProps} />
-      </Layout>
-    </Provider>
+    <SessionProvider session={session}>
+      <Provider store={store}>
+        <Layout>
+          <Head>
+            <title>Htet Ahkar | {pathName} </title>
+            <link rel="icon" href="/icon.jpeg" />
+          </Head>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
+    </SessionProvider>
   );
 }
 

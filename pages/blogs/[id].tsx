@@ -1,16 +1,41 @@
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 //Components
 import { Carousel } from "../../components";
-///API
-import * as api from "../../api";
+
 //Dependencies
 import moment from "moment";
+import axios from "axios";
 
-const blog = ({ blog }) => {
-  const router = useRouter();
+const blog = ({ id }) => {
+  const [blog, setBlog] = useState(null);
+
+  const getBlogInComponent = async (_id) => {
+    const {
+      data: { data },
+    } = await axios.get(`/api/blogs/${_id}`);
+    console.log(data);
+
+    setBlog(data);
+  };
+
+  useEffect(() => {
+    getBlogInComponent(id);
+  }, []);
 
   //Split body to chunks
-  const chunks = blog.body.split("<br/>");
+  const chunks = blog == null ? null : blog.body.split("<br/>");
+
+  if (chunks == null) {
+    return (
+      <div
+        className="flex flex-col items-center justify-start min-h-screen p-5 bg-bg
+  dark:bg-reading dark:text-dark-secondaryText
+    md:px-12"
+      >
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -82,13 +107,11 @@ const blog = ({ blog }) => {
 export default blog;
 
 export async function getServerSideProps({ params: { id } }) {
-  const {
-    data: { data },
-  } = await api.fetchBlog(id);
+  console.log(id);
 
   return {
     props: {
-      blog: data,
+      id,
     },
   };
 }
