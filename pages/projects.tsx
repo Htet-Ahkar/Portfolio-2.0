@@ -38,7 +38,7 @@ const projects = () => {
                 <ProjectCard project={project} />
               </div>
             ))
-          : `Sorry, Nothing to show!!!`}
+          : `Loading...`}
       </div>
     </div>
   );
