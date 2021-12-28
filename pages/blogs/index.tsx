@@ -1,23 +1,10 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 //Dependencies
 import moment from "moment";
 import axios from "axios";
 
-const blogs = () => {
-  // FetchData
-  const [data, setData] = useState([]);
-  const fetchBlogs = async () => {
-    const {
-      data: { data },
-    } = await axios.get("/api/blogs");
-    setData(data);
-  };
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
+const blogs = ({ data }) => {
   //Increase ViewCounts
   const increaseView = async (id) => {
     await axios.put(`/api/blogs/${id}/viewCount`);
@@ -129,9 +116,22 @@ const blogs = () => {
               </div>
             </div>
           ))
-        : `Loading.....`}
+        : `Sorry!!! There's Nothing to Show!!!`}
     </div>
   );
 };
 
 export default blogs;
+
+export async function getStaticProps() {
+  const {
+    data: { data },
+  } = await axios.get("https://portfolio-client-pink.vercel.app/api/blogs");
+
+  return {
+    props: {
+      data,
+    },
+    revalidate: 10, // In seconds
+  };
+}

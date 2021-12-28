@@ -1,23 +1,10 @@
-import { useEffect, useState } from "react";
 //Dependencies
 import axios from "axios";
 
 // Components
 import { ProjectCard } from "../components";
 
-const projects = () => {
-  // FetchData
-  const [data, setData] = useState([]);
-  const fetchBlogs = async () => {
-    const {
-      data: { data },
-    } = await axios.get("/api/projects");
-    setData(data);
-  };
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
+const projects = ({ data }) => {
   return (
     <div
       className="min-h-screen w-full flex justify-center items-center bg-bg text-secondaryText p-5
@@ -38,10 +25,23 @@ const projects = () => {
                 <ProjectCard project={project} />
               </div>
             ))
-          : `Loading...`}
+          : `Sorry!!! There's Nothing to Show!!!`}
       </div>
     </div>
   );
 };
 
 export default projects;
+
+export async function getStaticProps() {
+  const {
+    data: { data },
+  } = await axios.get("https://portfolio-client-pink.vercel.app/api/projects");
+
+  return {
+    props: {
+      data,
+    },
+    revalidate: 10, // In seconds
+  };
+}
