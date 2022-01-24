@@ -9,6 +9,7 @@ import { clearForm } from "../actions/projects";
 
 const ProjectForm = () => {
   const dispatch = useDispatch();
+  const [isSuccess, setisSuccess] = useState(null);
   const [projectData, setProjectData] = useState({
     name: "",
     description: "",
@@ -30,12 +31,20 @@ const ProjectForm = () => {
 
   // Create Project
   const createProject = async (data) => {
-    await axios.post(`/api/projects`, data);
+    const {
+      data: { success },
+    } = await axios.post(`/api/projects`, data);
+
+    setisSuccess(success);
   };
 
   // Update Project
   const updateProject = async (id, data) => {
-    await axios.put(`/api/projects/${id}`, data);
+    const {
+      data: { success },
+    } = await axios.put(`/api/projects/${id}`, data);
+
+    setisSuccess(success);
   };
 
   // Get Projects
@@ -60,6 +69,10 @@ const ProjectForm = () => {
 
     setProjectData(defaultState);
     dispatch(clearForm());
+
+    setTimeout(() => {
+      setisSuccess(null);
+    }, 5000);
   };
 
   return (
@@ -169,7 +182,10 @@ const ProjectForm = () => {
           />
         </div>
         <span className="mb-2 block text-success">
-          Successfully Submited
+          {isSuccess !== null &&
+            `${
+              isSuccess ? `Successfully Submited` : `There's something wrong.`
+            }`}
           <br />
         </span>
         {/* Buttons */}

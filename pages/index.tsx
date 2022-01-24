@@ -2,8 +2,9 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen bg-bg text-secondaryText p-5
+    <main
+      className="flex flex-col items-center justify-center min-h-screen bg-bg text-secondaryText p-5 
+      md:my-[-3rem]
     dark:bg-dark-bg dark:text-dark-secondaryText"
     >
       {/* Card */}
@@ -25,7 +26,7 @@ export default function Home() {
               src="/Me.jpg"
               layout="fill"
               objectFit="contain"
-              alt="htet_Ahkar"
+              alt="htet_ahkar"
               className="rounded-3xl
               lg:rounded-full"
             />
@@ -34,7 +35,7 @@ export default function Home() {
         {/* Text Boxs */}
         <div className="flex flex-col gap-5 justify-center items-center w-full py-5">
           {/* Box-1 */}
-          <div className="w-full">
+          <div className="w-full animate-bounce">
             <svg
               width="150"
               height="89"
@@ -111,6 +112,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -32,7 +32,7 @@ const blogs = ({ data }) => {
                 {blog.selectedFiles[0] === undefined ? (
                   <div className="h-64">{`There's no feature image.`}</div>
                 ) : (
-                  <div className="w-80 h-64 relative">
+                  <div className="w-64 h-64 relative">
                     <Image
                       src={blog.selectedFiles[0]}
                       alt={blog.title}
@@ -132,6 +132,6 @@ export async function getStaticProps() {
     props: {
       data,
     },
-    revalidate: 10, // In seconds
+    revalidate: 600, // In seconds
   };
 }

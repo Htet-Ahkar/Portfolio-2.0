@@ -9,6 +9,7 @@ import { clearForm } from "../actions/blogs";
 
 const blogForm = () => {
   const dispatch = useDispatch();
+  const [isSuccess, setisSuccess] = useState(null);
   const [blogData, setBlogData] = useState({
     title: "",
     snippet: "",
@@ -29,12 +30,20 @@ const blogForm = () => {
 
   // Create Blog
   const createBlog = async (data) => {
-    await axios.post(`/api/blogs`, data);
+    const {
+      data: { success },
+    } = await axios.post(`/api/blogs`, data);
+
+    setisSuccess(success);
   };
 
   // Update Blog
   const updatedBlog = async (id, data) => {
-    await axios.put(`/api/blogs/${id}`, data);
+    const {
+      data: { success },
+    } = await axios.put(`/api/blogs/${id}`, data);
+
+    setisSuccess(success);
   };
 
   // Get Blog
@@ -57,6 +66,10 @@ const blogForm = () => {
 
     setBlogData(defaultState);
     dispatch(clearForm());
+
+    setTimeout(() => {
+      setisSuccess(null);
+    }, 5000);
   };
 
   return (
@@ -151,7 +164,10 @@ const blogForm = () => {
           />
         </div>
         <span className="mb-2 block text-success">
-          Successfully Submited
+          {isSuccess !== null &&
+            `${
+              isSuccess ? `Successfully Submited` : `There's something wrong.`
+            }`}
           <br />
         </span>
         {/* Buttons */}
